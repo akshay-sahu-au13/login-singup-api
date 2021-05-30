@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const URI = 'mongodb://localhost:27017/test';
+const URI = 'mongodb+srv://akshay:admin@cluster0.3sl2w.mongodb.net/BackendApr?retryWrites=true&w=majority';
 const MongoInit = () => {
     mongoose.connect(URI, (err, connection) => {
         if (err){
