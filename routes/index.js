@@ -54,6 +54,8 @@ Router.post('/signup', upload, async (req, res) => {
 
         await user.save();
 
+
+
         res.send({ message: "User registered!", UserInfo: user })
     } catch (error) {
         if (error) {
@@ -80,6 +82,8 @@ Router.post('/login', async (req, res) => {
 
             const token = await jwt.sign({ id: user._id, email: user.email }, "my_login_secret")
 
+            res.cookie('token', token, { httpOnly: true, maxAge: 1000000 })
+
             res.status(200).send({ message: "Login Success", userInfo: user, token })
 
         } else {
@@ -92,9 +96,16 @@ Router.post('/login', async (req, res) => {
     }
 })
 
-// Router.get('/profile', auth, (req, res)=> {
-
-// })
+Router.get('/profile', auth, async (req, res) => {
+    try {
+        console.log("Body from profile:: ", req.body)
+        const user = await User.findById(req.body.id);
+        res.send({ message: "Welcomre to the profile page", UserDetails: user })
+    } catch (error) {
+        console.log(error.message);
+        res.send({ message: "Error while fetching the profile", error: error.message });
+    }
+})
 
 
 
